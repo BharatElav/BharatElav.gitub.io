@@ -17,10 +17,10 @@ media: /images/spartahack.jpg
 mediaType: image
 side: left
 
-Runner-up at SpartaHack 11 with AutoSpot — a computer vision-powered solo lifting safety system. I architected the control system using a Teensy 4.1 and L298 logic controller driving a high-torque worm gear assembly, capable of a 150 lb vertical lift for under $70.
+Runner-up at SpartaHack 11 with AutoSpot: a computer vision powered solo lifting safety system. I architected the control system using a Teensy 4.1 and L298 logic controller driving a high-torque worm gear assembly, capable of a 150 lb vertical lift for under $70.
 
 ---highlight---
-media: /images/MOO.png
+media: /images/MOOclear.png
 mediaType: image
 side: right
 

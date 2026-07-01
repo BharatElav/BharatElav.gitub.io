@@ -105,6 +105,11 @@ title: Academic Specialist · MSU
 relationship: Faculty advisor for Formula SAE
 
 ---reference---
+name: Kalyanmoy Deb
+title: Electrical Engineer Professor · MSU
+relationship: Professor for whom I am researching under
+
+---reference---
 name: Prem Chahal
 title: Electrical Engineer Professor · MSU
 relationship: Course professor for whom I served as Undergraduate Learning Assistant

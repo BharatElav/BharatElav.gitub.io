@@ -8,24 +8,34 @@ const sections = ['Contact', 'Experience', 'Education', 'Skills', 'References']
 export default function CVSection({ data }: { data: CV }) {
     const [active, setActive] = useState('Contact')
     const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
+    const containerRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setActive(entry.target.id)
-                    }
-                })
-            },
-            { threshold: 0.3, rootMargin: '-10% 0px -40% 0px' }
-        )
+        const container = containerRef.current
+        if (!container) return
 
-        Object.values(sectionRefs.current).forEach((el) => {
-            if (el) observer.observe(el)
-        })
+        const handleScroll = () => {
+            const containerTop = container.getBoundingClientRect().top
+            let closest = sections[0]
+            let closestDistance = Infinity
 
-        return () => observer.disconnect()
+            sections.forEach((s) => {
+                const el = sectionRefs.current[s]
+                if (!el) return
+                const distance = Math.abs(el.getBoundingClientRect().top - containerTop - 20)
+                if (distance < closestDistance) {
+                    closestDistance = distance
+                    closest = s
+                }
+            })
+
+            setActive(closest)
+        }
+
+        container.addEventListener('scroll', handleScroll)
+        handleScroll()
+
+        return () => container.removeEventListener('scroll', handleScroll)
     }, [])
 
     const scrollTo = (id: string) => {
@@ -50,7 +60,7 @@ export default function CVSection({ data }: { data: CV }) {
                     ))}
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-10 py-12 flex flex-col gap-6 [&::-webkit-scrollbar]:hidden">
+                <div ref={containerRef} className="flex-1 overflow-y-auto px-10 py-12 flex flex-col gap-6 [&::-webkit-scrollbar]:hidden">
                     <div id="Contact" ref={(el) => { sectionRefs.current['Contact'] = el }} className="rounded-xl p-8">
                         <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Contact Information</h2>
                         <div className="grid grid-cols-2 gap-y-3">
