@@ -3,7 +3,7 @@ media: /images/compPicC.png
 mediaType: image
 side: left
 
-Hi! I'm Bharatraj, an Electrical and Computer Engineering student at MSU, current serving as the Embedded Software Lead for our Formula SAE team. Beyond the shop I participate in hackathons and am involved in MOO research. 
+Hi! I'm Bharatraj, an Electrical and Computer Engineering student at MSU, currently serving as the Embedded Software Lead for our Formula SAE team. Beyond the shop I participate in hackathons and am involved in MOO research. 
 
 ---highlight---
 media: /images/carNight.jpg
