@@ -50,7 +50,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                   transition={{ duration: 0.15 }}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-bold text-xl lowercase text-black dark:text-white">{post.title}</h3>
+                    <h3 className="font-bold text-xl text-black dark:text-white">{post.title}</h3>
                     <span className="text-xs text-gray-400 ml-2 border border-gray-200 dark:border-white/20 px-1.5 py-0.5 rounded">pinned</span>
                   </div>
                   <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{post.description}</p>

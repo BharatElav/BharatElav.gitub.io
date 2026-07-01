@@ -1,17 +1,17 @@
 ---project---
-title: SR-26 Wiring Harness
+title: TestProj1
 tag: Formula SAE
 media: /images/harness.jpg
 mediaType: image
-slug: HarnessProject
+slug: test1
 
 Short description of the project...
 
 ---project---
-title: AutoSpot
+title: TestProj2
 tag: Hackathons
 media: /videos/AutoSpot.mp4
 mediaType: video
-slug: AutoSpotProject
+slug: test2
 
 Short description of the project...

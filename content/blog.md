@@ -1,17 +1,26 @@
 ---post---
-title: Why CAN bus architecture matters
+title: Testpost1
 date: 2025-01-15
 readtime: 3
-slug: can-bus-architecture
+slug: test1
 pinned: true
 
-A deep dive into how CAN bus topology decisions affect reliability and debug complexity in motorsport electronics.
+Short description of post...
 
 ---post---
-title: What Formula SAE taught me about engineering
+title: Testpost2
 date: 2025-01-20
 readtime: 5
-slug: formula-sae-lessons
+slug: test2
 pinned: false
 
-Lessons from leading the electrical architecture of a formula-style race car as a sophomore.
+Short description of post...
+
+---post---
+title: Testpost3
+date: 2025-01-20
+readtime: 5
+slug: test3
+pinned: false
+
+Short description of post...
