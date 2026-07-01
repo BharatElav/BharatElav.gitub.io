@@ -3,43 +3,62 @@ name: Bharatraj Elavarasan
 email: elavara1@msu.edu
 
 ---experience---
-title: Low Voltage Power Lead
 company: MSU Formula SAE
 link: https://www.msuformularacing.com/
-location: East Lansing, MI
-start: October 2024
-end: Present
 
-Designed and tested custom electronics and wiring harnesses for high-voltage systems in an open-wheel electric race car. Led PCB design in Altium, developed circuit models, and built load bank models for accumulator testing.
+role: Embedded Software Lead
+start: June 2026
+end: Present
+location: 
+
+Continuing to lead embedded software development for the vehicle's control systems.
+
+role: LV Power Lead
+start: July 2025
+end: June 2026
+location: 
+
+SR26 Motorsport Harness: Architected a full vehicle wiring harness, reducing rear harness mass by 33% through connector consolidation and route optimization.
+
+role: Electronics Team Member
+start: October 2024
+end: July 2025
+location: East Lansing, MI
+
+HV Indicator: Engineered a high-visibility LED indicator system for high voltage status monitoring.
 
 ---experience---
-title: Electrical System Member
 company: Michigan State Rocketry
 link: https://msurocketry.org/
-location: East Lansing, MI
-start: September 2024
-end: June 2025
 
-Developed a telemetry system using XBee modules to wirelessly transmit flight data to a ground station. Used minicom on a Raspberry Pi to interface with the ground-side XBee for real-time monitoring during launch operations.
+role: Electronics Team Member (Telemetry)
+start: September 2024
+end: May 2025
+location: East Lansing, MI
+
+Designed and deployed an XBee-based telemetry system to automate wireless transmission of flight data to ground station.
 
 ---experience---
-title: Assistant Director
 company: iCode Novi
 link: https://icodeschool.com/
-location: Novi, MI
+
+role: Assistant Director
 start: June 2023
 end: September 2024
+location: Novi, MI
 
-Guided instructors at the top-performing iCode franchise nationwide. Taught over 100 students across game development, robotics, and web development. Represented iCode at conventions including ASEICON.
+Guided instructors at the top-performing iCode franchise nationwide...
 
 ---education---
 institution: Michigan State University
+link: https://msu.edu
+
 degree: Bachelor of Science, Electrical Engineering
 start: 2023
 end: Present
 gpa: 4.0
 
-Currently engaged in graduate-level study of Multi-Criterion Optimization...
+Graduate-level study of Multi-Criterion Optimization. ULA for ECE202: Circuits and Systems II, teaching AC circuit analysis and circuit system design.
 
 ---skills---
 PCB Design (Altium, KiCad), CAN bus architecture, Embedded C, Python, MATLAB, RapidHarness, STM32, Raspberry Pi, Firebase, Git

@@ -45,7 +45,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
             {pinned.map((post) => (
               <Link key={post.slug} href={`/blog/${post.slug}`}>
                 <motion.div
-                  className="border border-black/10 dark:border-white/0 rounded-xl p-6 cursor-pointer h-full bg-[var(--background)]"
+                  className="border border-black/0 dark:border-white/0 rounded-xl p-6 cursor-pointer h-full bg-[var(--background)]"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.15 }}
                 >

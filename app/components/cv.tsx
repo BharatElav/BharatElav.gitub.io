@@ -35,33 +35,23 @@ export default function CVSection({ data }: { data: CV }) {
     return (
         <section className="h-screen snap-start flex overflow-hidden pt-20 justify-center bg-[var(--background)]">
             <div className="flex w-full max-w-5xl">
-
-                {/* Sidebar */}
                 <div className="w-36 shrink-0 px-4 py-12 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden">
                     {sections.map((s) => (
                         <button
                             key={s}
                             onClick={() => scrollTo(s)}
-                            className={`text-left text-sm transition-colors ${
-                                active === s
-                                    ? 'text-black dark:text-white font-bold border-l-2 border-black dark:border-white pl-2'
-                                    : 'text-gray-400 hover:text-black dark:hover:text-white pl-2'
-                            }`}
+                            className={`text-left text-sm transition-colors ${active === s
+                                ? 'text-black dark:text-white font-bold border-l-2 border-black dark:border-white pl-2'
+                                : 'text-gray-400 hover:text-black dark:hover:text-white pl-2'
+                                }`}
                         >
                             {s}
                         </button>
                     ))}
                 </div>
 
-                {/* Content */}
                 <div className="flex-1 overflow-y-auto px-10 py-12 flex flex-col gap-6 [&::-webkit-scrollbar]:hidden">
-
-                    {/* Contact */}
-                    <div
-                        id="Contact"
-                        ref={(el) => { sectionRefs.current['Contact'] = el }}
-                        className="border border-black/0 dark:border-white/0 rounded-xl p-8"
-                    >
+                    <div id="Contact" ref={(el) => { sectionRefs.current['Contact'] = el }} className="rounded-xl p-8">
                         <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Contact Information</h2>
                         <div className="grid grid-cols-2 gap-y-3">
                             <span className="font-semibold text-black dark:text-white">Name</span>
@@ -71,82 +61,82 @@ export default function CVSection({ data }: { data: CV }) {
                         </div>
                     </div>
 
-                    {/* Experience */}
-                    <div
-                        id="Experience"
-                        ref={(el) => { sectionRefs.current['Experience'] = el }}
-                        className="border border-black/0 dark:border-white/0 rounded-xl p-8"
-                    >
-                        <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">Experience</h2>
-                        <div className="flex flex-col gap-8">
-                            {data.experience.map((exp, i) => (
-                                <div key={i} className="flex gap-8">
-                                    <div className="w-36 shrink-0 text-right">
-                                        <span className="inline-block bg-black dark:bg-white text-white dark:text-black text-xs px-2 py-1 rounded">
-                                            {exp.start} — {exp.end}
-                                        </span>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{exp.location}</p>
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-base leading-tight text-black dark:text-white">{exp.title}</h3>
-                                        <a href={exp.link} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                    <div id="Experience" ref={(el) => { sectionRefs.current['Experience'] = el }} className="rounded-xl p-8">
+                        <h2 className="text-2xl font-bold mb-8 text-black dark:text-white">Experience</h2>
+                        <div className="flex flex-col gap-10">
+                            {data.experience.map((exp, i) => {
+                                return (
+                                    <div key={i}>
+                                        <a href={exp.link} target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:opacity-70 transition-opacity text-black dark:text-white">
                                             {exp.company}
                                         </a>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">{exp.description}</p>
+                                        <div className="mt-4 flex flex-col gap-6">
+                                            {exp.roles.map((role, j) => {
+                                                return (
+                                                    <div key={j}>
+                                                        <h4 className="font-semibold text-base text-black dark:text-white">{role.role}</h4>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            {role.start} — {role.end}{role.location ? ` · ${role.location}` : ''}
+                                                        </p>
+                                                        {role.description ? (
+                                                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
+                                                                {role.description}
+                                                            </p>
+                                                        ) : null}
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
                     </div>
 
-                    {/* Education */}
-                    <div
-                        id="Education"
-                        ref={(el) => { sectionRefs.current['Education'] = el }}
-                        className="border border-black/0 dark:border-white/0 rounded-xl p-8"
-                    >
-                        <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">Education</h2>
-                        <div className="flex flex-col gap-8">
+                    <div id="Education" ref={(el) => { sectionRefs.current['Education'] = el }} className="rounded-xl p-8">
+                        <h2 className="text-2xl font-bold mb-8 text-black dark:text-white">Education</h2>
+                        <div className="flex flex-col gap-10">
                             {data.education.map((edu, i) => (
-                                <div key={i} className="flex gap-8">
-                                    <div className="w-36 shrink-0 text-right">
-                                        <span className="inline-block bg-black dark:bg-white text-white dark:text-black text-xs px-2 py-1 rounded">
-                                            {edu.start} — {edu.end}
-                                        </span>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">GPA: {edu.gpa}</p>
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-base leading-tight text-black dark:text-white">{edu.institution}</h3>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">{edu.degree}</p>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">{edu.description}</p>
+                                <div key={i}>
+                                    {edu.link ? (
+                                        <a href={edu.link} target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:opacity-70 transition-opacity text-black dark:text-white">
+                                            {edu.institution}
+                                        </a>
+                                    ) : (
+                                        <h3 className="font-bold text-lg text-black dark:text-white">{edu.institution}</h3>
+                                    )}
+                                    <div className="mt-4 flex flex-col gap-6">
+                                        {edu.programs.map((prog, j) => (
+                                            <div key={j}>
+                                                <h4 className="font-semibold text-base text-black dark:text-white">{prog.degree}</h4>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                    {prog.start} — {prog.end}{prog.gpa ? ` · GPA: ${prog.gpa}` : ''}
+                                                </p>
+                                                {prog.description && (
+                                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
+                                                        {prog.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Skills */}
-                    <div
-                        id="Skills"
-                        ref={(el) => { sectionRefs.current['Skills'] = el }}
-                        className="border border-black/0 dark:border-white/0 rounded-xl p-8"
-                    >
+                    <div id="Skills" ref={(el) => { sectionRefs.current['Skills'] = el }} className="rounded-xl p-8">
                         <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">Skills</h2>
                         <div className="flex flex-wrap gap-2">
                             {data.skills.map((skill, i) => (
-                                <span key={i} className="text-sm border border-black/0 dark:border-white/0 text-black dark:text-white px-3 py-1 rounded-full">
+                                <span key={i} className="text-sm border border-black/20 dark:border-white/20 text-black dark:text-white px-3 py-1 rounded-full">
                                     {skill}
                                 </span>
                             ))}
                         </div>
                     </div>
 
-                    {/* References */}
-                    <div
-                        id="References"
-                        ref={(el) => { sectionRefs.current['References'] = el }}
-                        className="border border-black/0 dark:border-white/0 rounded-xl p-8"
-                    >
+                    <div id="References" ref={(el) => { sectionRefs.current['References'] = el }} className="rounded-xl p-8">
                         <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">References</h2>
                         <div className="flex flex-col gap-6">
                             {data.references.map((ref, i) => (
@@ -158,7 +148,6 @@ export default function CVSection({ data }: { data: CV }) {
                             ))}
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>

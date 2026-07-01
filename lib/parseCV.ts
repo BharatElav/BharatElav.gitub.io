@@ -6,23 +6,32 @@ export type CVContact = {
   email: string
 }
 
-export type CVExperience = {
-  title: string
-  company: string
-  link: string
-  location: string
+export type CVRole = {
+  role: string
   start: string
   end: string
+  location: string
   description: string
 }
 
-export type CVEducation = {
-  institution: string
+export type CVExperience = {
+  company: string
+  link: string
+  roles: CVRole[]
+}
+
+export type CVProgram = {
   degree: string
   start: string
   end: string
   gpa: string
   description: string
+}
+
+export type CVEducation = {
+  institution: string
+  link: string
+  programs: CVProgram[]
 }
 
 export type CVReference = {
@@ -57,6 +66,96 @@ export function parseCV(): CV {
     const type = sections[i].trim()
     const content = sections[i + 1]?.trim() ?? ''
 
+    if (type === 'experience') {
+      const roleBlocks = content.split(/(?=^role:)/m).filter(Boolean)
+      const hasHeader = !roleBlocks[0].trim().startsWith('role:')
+      const companyHeader = hasHeader ? roleBlocks.shift()! : ''
+
+      const companyMeta: Record<string, string> = {}
+      companyHeader.split('\n').forEach((line: string) => {
+        const [key, ...rest] = line.split(':')
+        if (key && rest.length) companyMeta[key.trim()] = rest.join(':').trim()
+      })
+
+      const roles: CVRole[] = roleBlocks.map((block: string) => {
+        const lines = block.split('\n')
+        const meta: Record<string, string> = {}
+        let contentStart = 0
+
+        for (let j = 0; j < lines.length; j++) {
+          const line = lines[j].trim()
+          if (line === '') {
+            contentStart = j + 1
+            break
+          }
+          const [key, ...rest] = lines[j].split(':')
+          meta[key.trim()] = rest.join(':').trim()
+        }
+
+        const description = lines.slice(contentStart).join('\n').trim()
+
+        return {
+          role: meta.role,
+          start: meta.start,
+          end: meta.end,
+          location: meta.location ?? '',
+          description,
+        }
+      })
+
+      cv.experience.push({
+        company: companyMeta.company,
+        link: companyMeta.link,
+        roles,
+      })
+      continue
+    }
+
+    if (type === 'education') {
+      const programBlocks = content.split(/(?=^degree:)/m).filter(Boolean)
+      const hasHeader = !programBlocks[0].trim().startsWith('degree:')
+      const instHeader = hasHeader ? programBlocks.shift()! : ''
+
+      const instMeta: Record<string, string> = {}
+      instHeader.split('\n').forEach((line: string) => {
+        const [key, ...rest] = line.split(':')
+        if (key && rest.length) instMeta[key.trim()] = rest.join(':').trim()
+      })
+
+      const programs: CVProgram[] = programBlocks.map((block: string) => {
+        const lines = block.split('\n')
+        const meta: Record<string, string> = {}
+        let contentStart = 0
+
+        for (let j = 0; j < lines.length; j++) {
+          const line = lines[j].trim()
+          if (line === '') {
+            contentStart = j + 1
+            break
+          }
+          const [key, ...rest] = lines[j].split(':')
+          meta[key.trim()] = rest.join(':').trim()
+        }
+
+        const description = lines.slice(contentStart).join('\n').trim()
+
+        return {
+          degree: meta.degree,
+          start: meta.start,
+          end: meta.end,
+          gpa: meta.gpa,
+          description,
+        }
+      })
+
+      cv.education.push({
+        institution: instMeta.institution,
+        link: instMeta.link,
+        programs,
+      })
+      continue
+    }
+
     const lines = content.split('\n')
     const meta: Record<string, string> = {}
     let contentStart = 0
@@ -67,7 +166,7 @@ export function parseCV(): CV {
         contentStart = j + 1
         break
       }
-      const [key, ...rest] = line.split(':')
+      const [key, ...rest] = lines[j].split(':')
       meta[key.trim()] = rest.join(':').trim()
     }
 
@@ -75,25 +174,6 @@ export function parseCV(): CV {
 
     if (type === 'contact') {
       cv.contact = { name: meta.name, email: meta.email }
-    } else if (type === 'experience') {
-      cv.experience.push({
-        title: meta.title,
-        company: meta.company,
-        link: meta.link,
-        location: meta.location,
-        start: meta.start,
-        end: meta.end,
-        description,
-      })
-    } else if (type === 'education') {
-      cv.education.push({
-        institution: meta.institution,
-        degree: meta.degree,
-        start: meta.start,
-        end: meta.end,
-        gpa: meta.gpa,
-        description,
-      })
     } else if (type === 'skills') {
       cv.skills = content.split(',').map((s: string) => s.trim())
     } else if (type === 'reference') {
