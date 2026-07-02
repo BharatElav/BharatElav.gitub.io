@@ -6,12 +6,12 @@ import { motion } from 'framer-motion'
 export default function HighlightBlock({ data }: { data: Highlight }) {
   return (
     <section
-      className={`flex items-center gap-8 h-screen px-16 pt-20 snap-start snap-always ${
-        data.side === 'left' ? 'flex-row-reverse' : 'flex-row'
+      className={`flex flex-col sm:flex-row items-center justify-center gap-8 min-h-screen sm:h-screen px-6 sm:px-16 pt-20 snap-start snap-always ${
+        data.side === 'left' ? 'sm:flex-row-reverse' : 'sm:flex-row'
       }`}
     >
       <motion.div
-        className="w-1/2"
+        className="w-full sm:w-1/2 max-h-[45vh] sm:max-h-none"
         initial={{ opacity: 0, x: data.side === 'left' ? -60 : 60 }}
         whileInView={{
           opacity: 1,
@@ -28,15 +28,15 @@ export default function HighlightBlock({ data }: { data: Highlight }) {
             loop
             muted
             playsInline
-            className="w-full rounded-lg"
+            className="w-full max-h-[45vh] sm:max-h-none object-cover rounded-lg"
           />
         ) : (
-          <img src={data.media} alt="" className="w-full rounded-lg" />
+          <img src={data.media} alt="" className="w-full max-h-[45vh] sm:max-h-none object-cover rounded-lg" />
         )}
       </motion.div>
 
       <motion.div
-        className="w-1/2"
+        className="w-full sm:w-1/2 text-center sm:text-left"
         initial={{ opacity: 0, x: data.side === 'left' ? 60 : -60 }}
         whileInView={{
           opacity: 1,
@@ -46,7 +46,7 @@ export default function HighlightBlock({ data }: { data: Highlight }) {
         viewport={{ once: false, amount: 0.5 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
       >
-        <p className="text-lg">{data.content}</p>
+        <p className="text-base sm:text-lg">{data.content}</p>
       </motion.div>
     </section>
   )

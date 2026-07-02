@@ -2,7 +2,7 @@
 
 import { CV } from '@/lib/parseCV'
 import { Course } from '@/lib/parseCourses'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const sections = ['Contact', 'Experience', 'Education', 'Skills', 'References']
@@ -65,8 +65,27 @@ function CourseCategoryBlock({
 
 export default function CVSection({ data, courses }: { data: CV; courses: Course[] }) {
     const [active, setActive] = useState('Contact')
+    const [stacked, setStacked] = useState(false)
     const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
+    const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({})
     const containerRef = useRef<HTMLDivElement | null>(null)
+    const tabBarRef = useRef<HTMLDivElement | null>(null)
+    const wrapRef = useRef<HTMLDivElement | null>(null)
+
+    useLayoutEffect(() => {
+        const SIDEBAR_WIDTH = 144 // w-36
+        const MIN_CONTENT_WIDTH = 480 // comfortable minimum for CV content
+
+        const check = () => {
+            const el = wrapRef.current
+            if (!el) return
+            setStacked(el.clientWidth < SIDEBAR_WIDTH + MIN_CONTENT_WIDTH)
+        }
+        check()
+        const ro = new ResizeObserver(check)
+        if (wrapRef.current) ro.observe(wrapRef.current)
+        return () => ro.disconnect()
+    }, [])
 
     useEffect(() => {
         const container = containerRef.current
@@ -96,21 +115,30 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
         return () => container.removeEventListener('scroll', handleScroll)
     }, [])
 
+    useEffect(() => {
+        const bar = tabBarRef.current
+        const tab = tabRefs.current[active]
+        if (!bar || !tab) return
+        const target = tab.offsetLeft + tab.offsetWidth / 2 - bar.clientWidth / 2
+        bar.scrollTo({ left: target, behavior: 'smooth' })
+    }, [active])
+
     const scrollTo = (id: string) => {
         sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth' })
     }
 
     return (
-        <section className="h-screen snap-start snap-always flex overflow-hidden pt-20 justify-center bg-[var(--background)]">
-            <div className="flex w-full max-w-5xl">
-                <div className="w-36 shrink-0 px-4 py-12 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden">
+        <section className={`h-screen snap-start snap-always flex overflow-hidden pt-20 justify-center bg-[var(--background)] ${stacked ? 'flex-col' : 'flex-row'}`}>
+            <div ref={wrapRef} className={`flex w-full max-w-5xl h-full ${stacked ? 'flex-col' : 'flex-row'}`}>
+                <div ref={tabBarRef} className={`shrink-0 px-4 gap-4 [&::-webkit-scrollbar]:hidden flex ${stacked ? 'w-full flex-row py-4 overflow-x-auto' : 'w-36 flex-col py-12 overflow-y-auto'}`}>
                     {sections.map((s) => (
                         <button
                             key={s}
+                            ref={(el) => { tabRefs.current[s] = el }}
                             onClick={() => scrollTo(s)}
-                            className={`text-left text-sm transition-colors ${active === s
-                                ? 'text-black dark:text-white font-bold border-l-2 border-black dark:border-white pl-2'
-                                : 'text-gray-400 hover:text-black dark:hover:text-white pl-2'
+                            className={`shrink-0 text-left text-sm whitespace-nowrap transition-colors ${stacked ? 'pb-1' : 'pl-2'} ${active === s
+                                ? `text-black dark:text-white font-bold ${stacked ? 'border-b-2' : 'border-l-2'} border-black dark:border-white`
+                                : 'text-gray-400 hover:text-black dark:hover:text-white'
                                 }`}
                         >
                             {s}
@@ -118,8 +146,8 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                     ))}
                 </div>
 
-                <div ref={containerRef} className="flex-1 overflow-y-auto px-10 py-12 flex flex-col gap-6 [&::-webkit-scrollbar]:hidden">
-                    <div id="Contact" ref={(el) => { sectionRefs.current['Contact'] = el }} className="rounded-xl p-8">
+                <div ref={containerRef} className={`flex-1 overflow-y-auto flex flex-col gap-6 [&::-webkit-scrollbar]:hidden ${stacked ? 'px-4 py-8' : 'px-10 py-12'}`}>
+                    <div id="Contact" ref={(el) => { sectionRefs.current['Contact'] = el }} className="rounded-xl p-4 md:p-8">
                         <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Contact Information</h2>
                         <div className="grid grid-cols-2 gap-y-3">
                             <span className="font-semibold text-black dark:text-white">Name</span>
@@ -129,7 +157,7 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                         </div>
                     </div>
 
-                    <div id="Experience" ref={(el) => { sectionRefs.current['Experience'] = el }} className="rounded-xl p-8">
+                    <div id="Experience" ref={(el) => { sectionRefs.current['Experience'] = el }} className="rounded-xl p-4 md:p-8">
                         <h2 className="text-2xl font-bold mb-8 text-black dark:text-white">Experience</h2>
                         <div className="flex flex-col gap-10">
                             {data.experience.map((exp, i) => {
@@ -161,7 +189,7 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                         </div>
                     </div>
 
-                    <div id="Education" ref={(el) => { sectionRefs.current['Education'] = el }} className="rounded-xl p-8">
+                    <div id="Education" ref={(el) => { sectionRefs.current['Education'] = el }} className="rounded-xl p-4 md:p-8">
                         <h2 className="text-2xl font-bold mb-8 text-black dark:text-white">Education</h2>
                         <div className="flex flex-col gap-10">
                             {data.education.map((edu, i) => (
@@ -205,7 +233,7 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                         </div>
                     </div>
 
-                    <div id="Skills" ref={(el) => { sectionRefs.current['Skills'] = el }} className="rounded-xl p-8">
+                    <div id="Skills" ref={(el) => { sectionRefs.current['Skills'] = el }} className="rounded-xl p-4 md:p-8">
                         <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">Skills</h2>
                         <div className="flex flex-wrap gap-2">
                             {data.skills.map((skill, i) => (
@@ -216,7 +244,7 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                         </div>
                     </div>
 
-                    <div id="References" ref={(el) => { sectionRefs.current['References'] = el }} className="rounded-xl p-8">
+                    <div id="References" ref={(el) => { sectionRefs.current['References'] = el }} className="rounded-xl p-4 md:p-8">
                         <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">References</h2>
                         <div className="flex flex-col gap-6">
                             {data.references.map((ref, i) => (

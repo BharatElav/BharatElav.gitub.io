@@ -6,8 +6,8 @@ export default function BlogPage() {
 
     return (
         <main className="min-h-screen pt-32 pb-16 [&::-webkit-scrollbar]:hidden flex flex-col items-center bg-[var(--background)]">
-            <div className="w-full max-w-2xl px-8">
-                <h1 className="text-5xl font-bold mb-12 text-black dark:text-white">Blog</h1>
+            <div className="w-full max-w-2xl px-4 md:px-8">
+                <h1 className="text-3xl md:text-5xl font-bold mb-12 text-black dark:text-white">Blog</h1>
                 <BlogList posts={posts} />
             </div>
         </main>

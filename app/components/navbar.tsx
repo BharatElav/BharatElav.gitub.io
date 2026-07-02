@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const socials = [
     {
@@ -25,80 +26,197 @@ const socials = [
 ]
 
 export default function NavBar() {
+    const [open, setOpen] = useState(false)
+    const [collapsed, setCollapsed] = useState(false)
+    const navRef = useRef<HTMLElement>(null)
+    const measureRef = useRef<HTMLDivElement>(null)
+
+    useLayoutEffect(() => {
+        const check = () => {
+            const nav = navRef.current
+            const measure = measureRef.current
+            if (!nav || !measure) return
+            setCollapsed(measure.scrollWidth > nav.clientWidth)
+        }
+        check()
+        const ro = new ResizeObserver(check)
+        if (navRef.current) ro.observe(navRef.current)
+        return () => ro.disconnect()
+    }, [])
+
+    useEffect(() => {
+        if (!collapsed) setOpen(false)
+    }, [collapsed])
+
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-16 py-5 bg-[var(--background)] border-b border-black/0 dark:border-white/0">
-            <div className="flex flex-col">
-                <Link href="/" className="text-lg font-bold text-black dark:text-white leading-tight">
-                    Bharatraj Elavarasan
-                </Link>
-                <span className="text-xs text-black/50 dark:text-white/50 tracking-wide">Electrical & Computer Engineering @ MSU</span>
+        <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)]">
+            {/* Invisible clone of the full desktop row, used only to measure whether it fits */}
+            <div
+                ref={measureRef}
+                aria-hidden="true"
+                className="invisible absolute top-0 left-0 flex items-center justify-between gap-8 px-6 md:px-16 py-5 pointer-events-none"
+                style={{ width: 'max-content' }}
+            >
+                <div className="flex flex-col">
+                    <span className="text-lg font-bold leading-tight">Bharatraj Elavarasan</span>
+                    <span className="text-xs tracking-wide">Electrical & Computer Engineering @ MSU</span>
+                </div>
+                <div className="flex items-center gap-8">
+                    <span className="text-sm px-3 py-1">elavara1@msu.edu</span>
+                    <div className="flex items-center gap-3">
+                        {socials.map((s) => (
+                            <span key={s.label} className="w-9 h-9" />
+                        ))}
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <span className="text-sm px-3 py-1">Projects</span>
+                        <span className="text-sm px-3 py-1">Blog</span>
+                    </div>
+                </div>
             </div>
 
-            <div className="flex items-center gap-8">
-                <motion.a
-                    href="mailto:elavara1@msu.edu"
-                    className="text-sm text-black dark:text-white relative overflow-hidden px-3 py-1 rounded-md hover:text-white dark:hover:text-black transition-colors"
-                    whileHover="hover"
-                >
-                    <motion.span
-                        className="absolute inset-0 rounded-md bg-black dark:bg-white"
-                        initial={{ scale: 0 }}
-                        variants={{ hover: { scale: 1, opacity: 1 } }}
-                        transition={{ duration: 0.15, ease: 'easeInOut' }}
-                    />
-                    <span className="relative z-10">elavara1@msu.edu</span>
-                </motion.a>
+            <div className="flex items-center justify-between px-6 md:px-16 py-5">
+                <div className="flex flex-col">
+                    <Link href="/" className={`font-bold text-black dark:text-white leading-tight ${collapsed ? 'text-base' : 'text-lg'}`}>
+                        Bharatraj Elavarasan
+                    </Link>
+                    {!collapsed && (
+                        <span className="text-xs text-black/50 dark:text-white/50 tracking-wide">Electrical & Computer Engineering @ MSU</span>
+                    )}
+                </div>
 
-                <div className="flex items-center gap-3">
-                    {socials.map((s) => (
-                        <motion.a
-                            key={s.label}
-                            href={s.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={s.label}
-                            className="w-9 h-9 rounded-full border border-black dark:border-white flex items-center justify-center text-black dark:text-white relative overflow-hidden transition-colors hover:text-white dark:hover:text-black"
-                            whileHover="hover"
-                        >
+                {!collapsed && (
+                <div className="flex items-center gap-8">
+                    <motion.a
+                        href="mailto:elavara1@msu.edu"
+                        className="text-sm text-black dark:text-white relative overflow-hidden px-3 py-1 rounded-md hover:text-white dark:hover:text-black transition-colors"
+                        whileHover="hover"
+                    >
+                        <motion.span
+                            className="absolute inset-0 rounded-md bg-black dark:bg-white"
+                            initial={{ scale: 0 }}
+                            variants={{ hover: { scale: 1, opacity: 1 } }}
+                            transition={{ duration: 0.15, ease: 'easeInOut' }}
+                        />
+                        <span className="relative z-10">elavara1@msu.edu</span>
+                    </motion.a>
+
+                    <div className="flex items-center gap-3">
+                        {socials.map((s) => (
+                            <motion.a
+                                key={s.label}
+                                href={s.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={s.label}
+                                className="w-9 h-9 rounded-full border border-black dark:border-white flex items-center justify-center text-black dark:text-white relative overflow-hidden transition-colors hover:text-white dark:hover:text-black"
+                                whileHover="hover"
+                            >
+                                <motion.span
+                                    className="absolute inset-0 rounded-full bg-black dark:bg-white"
+                                    initial={{ scale: 0 }}
+                                    variants={{ hover: { scale: 1, opacity: 1 } }}
+                                    transition={{ duration: 0.15, ease: 'easeInOut' }}
+                                />
+                                <span className="relative z-10 flex items-center justify-center">
+                                    {s.icon}
+                                </span>
+                            </motion.a>
+                        ))}
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        <motion.div className="relative overflow-hidden rounded-md" whileHover="hover">
                             <motion.span
-                                className="absolute inset-0 rounded-full bg-black dark:bg-white"
+                                className="absolute inset-0 rounded-md bg-black dark:bg-white"
                                 initial={{ scale: 0 }}
                                 variants={{ hover: { scale: 1, opacity: 1 } }}
                                 transition={{ duration: 0.15, ease: 'easeInOut' }}
                             />
-                            <span className="relative z-10 flex items-center justify-center">
-                                {s.icon}
-                            </span>
-                        </motion.a>
-                    ))}
-                </div>
+                            <Link href="/projects" className="relative z-10 text-sm text-black dark:text-white hover:text-white dark:hover:text-black px-3 py-1 block transition-colors">
+                                Projects
+                            </Link>
+                        </motion.div>
 
+                        <motion.div className="relative overflow-hidden rounded-md" whileHover="hover">
+                            <motion.span
+                                className="absolute inset-0 rounded-md bg-black dark:bg-white"
+                                initial={{ scale: 0 }}
+                                variants={{ hover: { scale: 1, opacity: 1 } }}
+                                transition={{ duration: 0.15, ease: 'easeInOut' }}
+                            />
+                            <Link href="/blog" className="relative z-10 text-sm text-black dark:text-white hover:text-white dark:hover:text-black px-3 py-1 block transition-colors">
+                                Blog
+                            </Link>
+                        </motion.div>
+                    </div>
+                </div>
+                )}
+
+                {collapsed && (
                 <div className="flex items-center gap-4">
-                    <motion.div className="relative overflow-hidden rounded-md" whileHover="hover">
-                        <motion.span
-                            className="absolute inset-0 rounded-md bg-black dark:bg-white"
-                            initial={{ scale: 0 }}
-                            variants={{ hover: { scale: 1, opacity: 1 } }}
-                            transition={{ duration: 0.15, ease: 'easeInOut' }}
-                        />
-                        <Link href="/projects" className="relative z-10 text-sm text-black dark:text-white hover:text-white dark:hover:text-black px-3 py-1 block transition-colors">
-                            Projects
-                        </Link>
-                    </motion.div>
+                    <div className="flex items-center gap-3">
+                        {socials.map((s) => (
+                            <a
+                                key={s.label}
+                                href={s.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={s.label}
+                                className="w-9 h-9 rounded-full border border-black dark:border-white flex items-center justify-center text-black dark:text-white"
+                            >
+                                {s.icon}
+                            </a>
+                        ))}
+                    </div>
 
-                    <motion.div className="relative overflow-hidden rounded-md" whileHover="hover">
-                        <motion.span
-                            className="absolute inset-0 rounded-md bg-black dark:bg-white"
-                            initial={{ scale: 0 }}
-                            variants={{ hover: { scale: 1, opacity: 1 } }}
-                            transition={{ duration: 0.15, ease: 'easeInOut' }}
-                        />
-                        <Link href="/blog" className="relative z-10 text-sm text-black dark:text-white hover:text-white dark:hover:text-black px-3 py-1 block transition-colors">
-                            Blog
-                        </Link>
-                    </motion.div>
+                    <button
+                        onClick={() => setOpen(!open)}
+                        aria-label="Toggle menu"
+                        aria-expanded={open}
+                        className="flex items-center justify-center w-9 h-9 text-black dark:text-white"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="w-6 h-6">
+                            {open ? (
+                                <path d="M6 6l12 12M18 6L6 18" />
+                            ) : (
+                                <path d="M4 7h16M4 12h16M4 17h16" />
+                            )}
+                        </svg>
+                    </button>
                 </div>
+                )}
             </div>
+
+            <AnimatePresence>
+                {collapsed && open && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                    >
+                        <div className="flex flex-col px-6 py-4 gap-1">
+                            <Link
+                                href="/projects"
+                                className="text-base text-black dark:text-white py-3"
+                                onClick={() => setOpen(false)}
+                            >
+                                Projects
+                            </Link>
+
+                            <Link
+                                href="/blog"
+                                className="text-base text-black dark:text-white py-3"
+                                onClick={() => setOpen(false)}
+                            >
+                                Blog
+                            </Link>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     )
 }

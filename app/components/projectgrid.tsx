@@ -15,7 +15,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
   return (
     <div>
       {/* Filters */}
-      <div className="flex gap-3 mb-10">
+      <div className="flex flex-wrap gap-3 mb-10">
         {tags.map((tag) => (
           <motion.button
             key={tag}
@@ -41,7 +41,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {filtered.map((project) => (
           <ProjectCard key={project.slug} project={project} />
         ))}

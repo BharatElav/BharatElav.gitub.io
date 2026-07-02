@@ -41,7 +41,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
       {/* Pinned / featured posts */}
       {pinned.length > 0 && (
         <>
-          <div className={`grid gap-4 mb-6 ${pinned.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+          <div className={`grid gap-4 mb-6 ${pinned.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
             {pinned.map((post) => (
               <Link key={post.slug} href={`/blog/${post.slug}`}>
                 <motion.div
@@ -71,12 +71,12 @@ export default function BlogList({ posts }: { posts: Post[] }) {
           <li key={post.slug} className="border-b border-black/0 dark:border-white/0">
             <Link href={`/blog/${post.slug}`}>
               <motion.div
-                className="flex gap-6 py-6 cursor-pointer"
+                className="flex gap-3 md:gap-6 py-6 cursor-pointer"
                 whileHover={{ scale: 1.01 }}
                 transition={{ duration: 0.15 }}
               >
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold mb-1 text-black dark:text-white">{post.title}</h3>
+                  <h3 className="text-lg md:text-xl font-semibold mb-1 text-black dark:text-white">{post.title}</h3>
                   <p className="text-gray-500 dark:text-gray-400 text-sm mb-2">{post.description}</p>
                   <p className="text-sm text-gray-400 dark:text-gray-500">
                     {post.readtime} min read &nbsp;·&nbsp;
@@ -99,7 +99,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
                   <img
                     src={post.thumbnail}
                     alt={post.title}
-                    className="w-32 h-24 object-cover rounded-lg shrink-0 self-start"
+                    className="w-20 h-16 md:w-32 md:h-24 object-cover rounded-lg shrink-0 self-start"
                   />
                 )}
               </motion.div>
