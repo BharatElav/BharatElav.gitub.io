@@ -10,7 +10,7 @@ export default function Home() {
   const courses = parseCourses()
 
   return (
-    <main className="h-screen overflow-y-scroll overflow-x-hidden snap-y snap-mandatory [&::-webkit-scrollbar]:hidden">
+    <main className="h-screen overflow-y-scroll overflow-x-hidden overscroll-x-none touch-pan-y snap-y snap-mandatory [&::-webkit-scrollbar]:hidden">
       {highlights.map((highlight, index) => (
         <HighlightBlock key={index} data={highlight} />
       ))}
