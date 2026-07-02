@@ -46,7 +46,7 @@ export default function HighlightBlock({ data }: { data: Highlight }) {
         viewport={{ once: false, amount: 0.5 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
       >
-        <p className="text-base sm:text-lg">{data.content}</p>
+        <p className="text-[clamp(0.85rem,3vh,1.125rem)] leading-snug break-words">{data.content}</p>
       </motion.div>
     </section>
   )

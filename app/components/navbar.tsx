@@ -49,7 +49,7 @@ export default function NavBar() {
     }, [collapsed])
 
     return (
-        <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)]">
+        <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)] overflow-x-hidden">
             {/* Invisible clone of the full desktop row, used only to measure whether it fits */}
             <div
                 ref={measureRef}

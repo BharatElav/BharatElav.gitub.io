@@ -130,7 +130,7 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
     return (
         <section className={`h-screen snap-start snap-always flex overflow-hidden pt-20 justify-center bg-[var(--background)] ${stacked ? 'flex-col' : 'flex-row'}`}>
             <div ref={wrapRef} className={`flex w-full max-w-5xl h-full ${stacked ? 'flex-col' : 'flex-row'}`}>
-                <div ref={tabBarRef} className={`shrink-0 px-4 gap-4 [&::-webkit-scrollbar]:hidden flex ${stacked ? 'w-full flex-row py-4 overflow-x-auto' : 'w-36 flex-col py-12 overflow-y-auto'}`}>
+                <div ref={tabBarRef} className={`shrink-0 px-4 gap-4 [&::-webkit-scrollbar]:hidden flex ${stacked ? 'w-full flex-row py-4 overflow-x-auto overflow-y-hidden' : 'w-36 flex-col py-12 overflow-y-auto overflow-x-hidden'}`}>
                     {sections.map((s) => (
                         <button
                             key={s}
@@ -146,31 +146,31 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                     ))}
                 </div>
 
-                <div ref={containerRef} className={`flex-1 overflow-y-auto flex flex-col gap-6 [&::-webkit-scrollbar]:hidden ${stacked ? 'px-4 py-8' : 'px-10 py-12'}`}>
+                <div ref={containerRef} className={`flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-6 [&::-webkit-scrollbar]:hidden ${stacked ? 'px-4 py-8' : 'px-10 py-12'}`}>
                     <div id="Contact" ref={(el) => { sectionRefs.current['Contact'] = el }} className="rounded-xl p-4 md:p-8">
-                        <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Contact Information</h2>
-                        <div className="grid grid-cols-2 gap-y-3">
+                        <h2 className="text-xl md:text-2xl font-bold mb-4 text-black dark:text-white">Contact Information</h2>
+                        <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 text-sm md:text-base">
                             <span className="font-semibold text-black dark:text-white">Name</span>
-                            <span className="text-black dark:text-white">{data.contact.name}</span>
+                            <span className="text-black dark:text-white break-words min-w-0">{data.contact.name}</span>
                             <span className="font-semibold text-black dark:text-white">Email</span>
-                            <a href={`mailto:${data.contact.email}`} className="hover:underline text-black dark:text-white">{data.contact.email}</a>
+                            <a href={`mailto:${data.contact.email}`} className="hover:underline text-black dark:text-white break-all min-w-0">{data.contact.email}</a>
                         </div>
                     </div>
 
                     <div id="Experience" ref={(el) => { sectionRefs.current['Experience'] = el }} className="rounded-xl p-4 md:p-8">
-                        <h2 className="text-2xl font-bold mb-8 text-black dark:text-white">Experience</h2>
+                        <h2 className="text-xl md:text-2xl font-bold mb-8 text-black dark:text-white">Experience</h2>
                         <div className="flex flex-col gap-10">
                             {data.experience.map((exp, i) => {
                                 return (
                                     <div key={i}>
-                                        <a href={exp.link} target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:opacity-70 transition-opacity text-black dark:text-white">
+                                        <a href={exp.link} target="_blank" rel="noopener noreferrer" className="font-bold text-base md:text-lg hover:opacity-70 transition-opacity text-black dark:text-white">
                                             {exp.company}
                                         </a>
                                         <div className="mt-4 flex flex-col gap-6">
                                             {exp.roles.map((role, j) => {
                                                 return (
                                                     <div key={j}>
-                                                        <h4 className="font-semibold text-base text-black dark:text-white">{role.role}</h4>
+                                                        <h4 className="font-semibold text-sm md:text-base text-black dark:text-white">{role.role}</h4>
                                                         <p className="text-xs text-gray-500 dark:text-gray-400">
                                                             {role.start} — {role.end}{role.location ? ` · ${role.location}` : ''}
                                                         </p>
@@ -190,21 +190,21 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                     </div>
 
                     <div id="Education" ref={(el) => { sectionRefs.current['Education'] = el }} className="rounded-xl p-4 md:p-8">
-                        <h2 className="text-2xl font-bold mb-8 text-black dark:text-white">Education</h2>
+                        <h2 className="text-xl md:text-2xl font-bold mb-8 text-black dark:text-white">Education</h2>
                         <div className="flex flex-col gap-10">
                             {data.education.map((edu, i) => (
                                 <div key={i}>
                                     {edu.link ? (
-                                        <a href={edu.link} target="_blank" rel="noopener noreferrer" className="font-bold text-lg hover:opacity-70 transition-opacity text-black dark:text-white">
+                                        <a href={edu.link} target="_blank" rel="noopener noreferrer" className="font-bold text-base md:text-lg hover:opacity-70 transition-opacity text-black dark:text-white">
                                             {edu.institution}
                                         </a>
                                     ) : (
-                                        <h3 className="font-bold text-lg text-black dark:text-white">{edu.institution}</h3>
+                                        <h3 className="font-bold text-base md:text-lg text-black dark:text-white">{edu.institution}</h3>
                                     )}
                                     <div className="mt-4 flex flex-col gap-6">
                                         {edu.programs.map((prog, j) => (
                                             <div key={j}>
-                                                <h4 className="font-semibold text-base text-black dark:text-white">{prog.degree}</h4>
+                                                <h4 className="font-semibold text-sm md:text-base text-black dark:text-white">{prog.degree}</h4>
                                                 <p className="text-xs text-gray-500 dark:text-gray-400">
                                                     {prog.start} — {prog.end}{prog.gpa ? ` · GPA: ${prog.gpa}` : ''}
                                                 </p>
@@ -234,7 +234,7 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                     </div>
 
                     <div id="Skills" ref={(el) => { sectionRefs.current['Skills'] = el }} className="rounded-xl p-4 md:p-8">
-                        <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">Skills</h2>
+                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-black dark:text-white">Skills</h2>
                         <div className="flex flex-wrap gap-2">
                             {data.skills.map((skill, i) => (
                                 <span key={i} className="text-sm border border-transparent text-black dark:text-white px-3 py-1 rounded-full">
@@ -245,7 +245,7 @@ export default function CVSection({ data, courses }: { data: CV; courses: Course
                     </div>
 
                     <div id="References" ref={(el) => { sectionRefs.current['References'] = el }} className="rounded-xl p-4 md:p-8">
-                        <h2 className="text-2xl font-bold mb-6 text-black dark:text-white">References</h2>
+                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-black dark:text-white">References</h2>
                         <div className="flex flex-col gap-6">
                             {data.references.map((ref, i) => (
                                 <div key={i}>
